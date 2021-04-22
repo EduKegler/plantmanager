@@ -1,16 +1,18 @@
 
 import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
-import Welcolme from './src/pages/Welcome';
+import { View, StyleSheet } from 'react-native';
+import { useFonts, Jost_400Regular, Jost_600SemiBold } from '@expo-google-fonts/jost';
+import AppLoading from 'expo-app-loading';
+import Routes from './src/routes/';
 
 export default function App() {
+  const [fontsLoaded] = useFonts({ Jost_400Regular, Jost_600SemiBold });
+
+  if (!fontsLoaded) {
+    return <AppLoading />
+  };
+
   return (
-    <View style={style.container}>
-      <Welcolme />
-    </View>
+    <Routes />
   );
 }
-
-const style = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', alignItems: 'center' }
-})
