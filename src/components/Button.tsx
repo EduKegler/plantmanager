@@ -3,11 +3,11 @@ import { TouchableOpacity, StyleSheet, Text, TouchableOpacityProps } from 'react
 import colors from '../styles/colors';
 import fonts from '../styles/fonts';
 
-interface LoadProps extends TouchableOpacityProps {
+interface ButtonProps extends TouchableOpacityProps {
     title: string;
 }
 
-export default function Load(props: LoadProps) {
+export default function Button(props: ButtonProps) {
     const { title, ...rest } = props;
     return(
         <TouchableOpacity style={styles.container} {...rest}>
