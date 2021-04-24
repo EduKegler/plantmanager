@@ -5,7 +5,7 @@ import Tip from '../components/Tip';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../components/Header';
 import PlantCardSecondary from '../components/PlantCardSecondary';
-import { loadPlant, PlantProps, RemovePlant } from '../libs/storage';
+import { loadPlant, PlantProps, removePlant } from '../libs/storage';
 import fonts from '../styles/fonts';
 import { formatDistance } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -15,19 +15,25 @@ export default function MyPlants() {
 
     const [myPlants, setMyPlants] = React.useState<PlantProps[]>([]);
     const [isLoading, setIsLoading] = React.useState(true);
-    const [nextWatered, setNextWatered] = React.useState<string>();
+    const [nextWatered, setNextWatered] = React.useState<string>('');
 
     React.useEffect(() => {
         async function loadStorage() {
             const plantsStoraged = await loadPlant();
-            const nextTime = formatDistance(new Date(plantsStoraged[0]?.dateTimeNotification).getTime(), new Date().getTime(), { locale: ptBR });
-            setNextWatered(`Não esquece de regar a ${plantsStoraged[0]?.name} à ${nextTime}`)
             setMyPlants(plantsStoraged);
             setIsLoading(false);
         }
-
         loadStorage();
     }, [])
+
+    React.useEffect(() => {
+        if (myPlants.length) {
+            const nextTime = formatDistance(new Date(myPlants[0]?.dateTimeNotification).getTime(), new Date().getTime(), { locale: ptBR });
+            setNextWatered(`Não esqueça de regar a ${myPlants[0]?.name} à ${nextTime}.`)
+        } else { 
+            setNextWatered(`Sem plantas para serem lembradas.`)
+        }
+    }, [myPlants])
 
     function handleRemove(plant: PlantProps) {
         Alert.alert('Remover', `Deseja remover a ${plant.name}?`, [
@@ -35,7 +41,7 @@ export default function MyPlants() {
             {
                 text: 'Sim', onPress: async () => {
                     try {
-                        await RemovePlant(plant.id);
+                        await removePlant(plant.id);
                         setMyPlants((oldValue) =>
                             oldValue.filter(item => item.id !== plant.id));
                     } catch (error) {
@@ -55,9 +61,7 @@ export default function MyPlants() {
         <SafeAreaView style={styles.container}>
             <Header title='Minhas' name='Plantinha' />
             <View style={styles.content}>
-                <View style={styles.tipContainer}>
-                    <Tip waterTip={"Regue sua Aningapara daqui a 2 horas."} />
-                </View>
+                <Tip waterTip={nextWatered} />
                 <View style={styles.plants}>
                     <Text style={styles.plantsTitle}>Próximas Regadas</Text>
                     <FlatList
@@ -86,9 +90,7 @@ const styles = StyleSheet.create({
     },
     content: {
         flex: 1,
-        paddingHorizontal: 30,
-    },
-    tipContainer: {
+        width: '100%'
     },
     plants: {
         flex: 1

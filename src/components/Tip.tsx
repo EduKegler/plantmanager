@@ -36,10 +36,11 @@ const styles = StyleSheet.create({
         height: 60
     },
     text: {
+        flex: 1,
         paddingHorizontal: 20,
         fontFamily: fonts.text,
         fontSize: 17,
-        textAlign: 'justify',
+        alignContent: 'center',
         color: colors.blue,
     },
 });

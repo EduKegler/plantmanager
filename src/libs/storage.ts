@@ -94,12 +94,12 @@ export async function loadPlant(): Promise<PlantProps[]> {
     }
 }
 
-export async function RemovePlant(id: number): Promise<void> {
+export async function removePlant(id: number): Promise<void> {
     try {
         const data = await AsyncStorage.getItem('@plantmanager:plants');
         const plants = data ? (JSON.parse(data) as StoragePlantProps) : {}
         await Notifications.cancelScheduledNotificationAsync(plants[id].notificationId);
-        
+
         delete plants[id];
         await AsyncStorage.setItem('@plantmanager:plants', JSON.stringify(plants))
     } catch (err) {
