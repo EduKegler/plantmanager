@@ -1,6 +1,6 @@
 # Plant Manager
 
-Demo: APK
+Demo(APK): https://drive.google.com/file/d/1SsuJswgESmobXuUBs71ftTkdelEmj5fo/view?usp=sharing
 
 ![PlantManager](https://user-images.githubusercontent.com/30960212/118414799-066e6f00-b67d-11eb-8ab2-9a28b48a01c0.gif)
 
